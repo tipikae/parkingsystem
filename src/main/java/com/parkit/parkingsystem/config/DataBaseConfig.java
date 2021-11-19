@@ -13,7 +13,7 @@ public class DataBaseConfig {
         logger.info("Create DB connection");
         Class.forName("com.mysql.cj.jdbc.Driver");
         return DriverManager.getConnection(
-                "jdbc:mysql://localhost:3306/ocdajavap4_prod","tipikae","231045");
+                "jdbc:mysql://localhost:3306/ocdajavap4_prod?enabledTLSProtocols=TLSv1.2","tipikae","231045");
     }
 
     public void closeConnection(Connection con){
