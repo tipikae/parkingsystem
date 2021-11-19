@@ -83,10 +83,7 @@ public class ParkingDataBaseIT {
         }
         
         parkingService.processExitingVehicle();
-        
-        // check if ticket exists
         Ticket ticket = ticketDAO.getTicket("ABCDEF");
-        assertNotNull(ticket);
         
         // check ticket fare equals 0
         assertEquals(0.0, ticket.getPrice());
