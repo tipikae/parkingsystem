@@ -14,7 +14,7 @@ public class DataBaseTestConfig extends DataBaseConfig {
         logger.info("Create DB connection");
         Class.forName("com.mysql.cj.jdbc.Driver");
         return DriverManager.getConnection(
-                "jdbc:mysql://localhost:3306/ocdajavap4_test","tipikae","231045");
+                "jdbc:mysql://127.0.0.1:3306/ocdajavap4_test?enabledTLSProtocols=TLSv1.2","tipikae","231045");
     }
 
     public void closeConnection(Connection con){
