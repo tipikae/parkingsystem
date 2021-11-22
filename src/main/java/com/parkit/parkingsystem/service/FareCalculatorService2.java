@@ -5,7 +5,7 @@ import java.util.concurrent.TimeUnit;
 import com.parkit.parkingsystem.constants.Fare;
 import com.parkit.parkingsystem.model.Ticket;
 
-public class FareCalculatorService {
+public class FareCalculatorService2 {
 	
 	private static final int FREE_MINUTES_PARKING = 30;
 
@@ -20,16 +20,27 @@ public class FareCalculatorService {
         // on convertit les minutes en heures
         double duration = diffInMinutes / 60;
         
-        switch (ticket.getParkingSpot().getParkingType()){
-	        case CAR: {
-	        	ticket.setPrice(duration * Fare.CAR_RATE_PER_HOUR);
-	            break;
+        // on définit le prix en fonction des différentes conditions
+        double price = 0.0;
+        
+        if(duration <= ((double)FREE_MINUTES_PARKING / 60)) {
+        	// le parking est gratuit pour les durées inférieures ou égales à 30 minutes
+	        price = 0.0;
+        } else {
+        	// sinon le parking est payant
+        	switch (ticket.getParkingSpot().getParkingType()){
+	            case CAR: {
+	                price = duration * Fare.CAR_RATE_PER_HOUR;
+	                break;
+	            }
+	            case BIKE: {
+	                price = duration * Fare.BIKE_RATE_PER_HOUR;
+	                break;
+	            }
+	            default: throw new IllegalArgumentException("Unkown Parking Type");
 	        }
-	        case BIKE: {
-	        	ticket.setPrice(duration * Fare.BIKE_RATE_PER_HOUR);
-	            break;
-	        }
-	        default: throw new IllegalArgumentException("Unkown Parking Type");
-	    }
+        }
+        
+        ticket.setPrice(price);
     }
 }
