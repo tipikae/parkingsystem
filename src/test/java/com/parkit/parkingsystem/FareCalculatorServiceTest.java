@@ -127,7 +127,7 @@ public class FareCalculatorServiceTest {
     }
 
 	@ParameterizedTest(name = "{0} minutes must be free parking time")
-    @ValueSource(ints = {15, 30})
+    @ValueSource(ints = {15, 29})
     public void calculateFareCarWithFreeParkingTime(int arg) {
     	Date inTime = new Date();
         inTime.setTime( System.currentTimeMillis() - (  arg * 60 * 1000) ); // {arg} minutes parking time should give 0 * parking fare per hour
@@ -144,7 +144,7 @@ public class FareCalculatorServiceTest {
     @Test
     public void calculateFareCarWithMoreThanFreeParkingTime() {
     	Date inTime = new Date();
-        inTime.setTime( System.currentTimeMillis() - (  31 * 60 * 1000) );//31 minutes parking time should give (31 / 60) * parking fare per hour
+        inTime.setTime( System.currentTimeMillis() - (  30 * 60 * 1000) );//30 minutes parking time should give a half parking fare per hour
         Date outTime = new Date();
         ParkingSpot parkingSpot = new ParkingSpot(1, ParkingType.CAR, false);
 
@@ -152,11 +152,11 @@ public class FareCalculatorServiceTest {
         ticket.setOutTime(outTime);
         ticket.setParkingSpot(parkingSpot);
         fareCalculatorService.calculateFare(ticket);
-        assertEquals(((double) 31 / 60) * Fare.CAR_RATE_PER_HOUR, ticket.getPrice());
+        assertEquals(0.5 * Fare.CAR_RATE_PER_HOUR, ticket.getPrice());
     }
 
 	@ParameterizedTest(name = "{0} minutes must be free parking time")
-    @ValueSource(ints = {15, 30})
+    @ValueSource(ints = {15, 29})
     public void calculateFareBikeWithFreeParkingTime(int arg) {
     	Date inTime = new Date();
         inTime.setTime( System.currentTimeMillis() - (  arg * 60 * 1000) ); // {arg} minutes parking time should give 0 * parking fare per hour
@@ -173,7 +173,7 @@ public class FareCalculatorServiceTest {
     @Test
     public void calculateFareBikeWithMoreThanFreeParkingTime() {
     	Date inTime = new Date();
-        inTime.setTime( System.currentTimeMillis() - (  31 * 60 * 1000) );//31 minutes parking time should give (31 / 60) * parking fare per hour
+        inTime.setTime( System.currentTimeMillis() - (  30 * 60 * 1000) );//30 minutes parking time should give a half parking fare per hour
         Date outTime = new Date();
         ParkingSpot parkingSpot = new ParkingSpot(1, ParkingType.BIKE, false);
 
@@ -181,6 +181,6 @@ public class FareCalculatorServiceTest {
         ticket.setOutTime(outTime);
         ticket.setParkingSpot(parkingSpot);
         fareCalculatorService.calculateFare(ticket);
-        assertEquals(((double) 31 / 60) * Fare.BIKE_RATE_PER_HOUR, ticket.getPrice());
+        assertEquals(0.5 * Fare.BIKE_RATE_PER_HOUR, ticket.getPrice());
     }
 }

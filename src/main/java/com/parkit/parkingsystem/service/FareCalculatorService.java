@@ -22,7 +22,7 @@ public class FareCalculatorService {
         
         // on définit le prix en fonction des différentes conditions
         double price = 0.0;   
-        if(duration <= ((double)FREE_MINUTES_PARKING / 60)) {
+        if(duration < ((double)FREE_MINUTES_PARKING / 60)) {
         	// le parking est gratuit pour les durées inférieures ou égales à 30 minutes
 	        price = 0.0;
         } else {
