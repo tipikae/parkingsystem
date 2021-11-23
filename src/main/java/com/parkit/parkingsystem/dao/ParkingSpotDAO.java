@@ -57,4 +57,25 @@ public class ParkingSpotDAO {
         return result;
     }
 
+    public ParkingSpot getParking(int id) {
+    	Connection con = null;
+    	ParkingSpot parking = null;
+    	try {
+    		con = dataBaseConfig.getConnection();
+    		PreparedStatement ps = con.prepareStatement(DBConstants.GET_PARKING_SPOT);
+    		ps.setInt(1, id);
+    		ResultSet rs = ps.executeQuery();
+    		if(rs.next()) {
+    			parking = new ParkingSpot(id, ParkingType.valueOf(rs.getString(3)),rs.getBoolean(2));
+    		}
+    		dataBaseConfig.closeResultSet(rs);
+    		dataBaseConfig.closePreparedStatement(ps);
+    	} catch(Exception ex) {
+    		logger.error("Error getting parking, parking_number=" + id, ex);
+    	} finally {
+    		dataBaseConfig.closeConnection(con);
+    	}
+    	
+    	return parking;
+    }
 }
