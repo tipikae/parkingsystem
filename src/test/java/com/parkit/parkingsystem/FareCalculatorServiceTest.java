@@ -2,24 +2,32 @@ package com.parkit.parkingsystem;
 
 import com.parkit.parkingsystem.constants.Fare;
 import com.parkit.parkingsystem.constants.ParkingType;
+import com.parkit.parkingsystem.dao.TicketDAO;
 import com.parkit.parkingsystem.model.ParkingSpot;
 import com.parkit.parkingsystem.model.Ticket;
 import com.parkit.parkingsystem.service.FareCalculatorService;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.when;
 
 import java.util.Date;
 
+@ExtendWith(MockitoExtension.class)
 public class FareCalculatorServiceTest {
 
     private static FareCalculatorService fareCalculatorService;
     private Ticket ticket;
-
+    
+    @Mock
+    private static TicketDAO ticketDAO;
+    
     @BeforeAll
     private static void setUp() {
         fareCalculatorService = new FareCalculatorService();
@@ -28,6 +36,17 @@ public class FareCalculatorServiceTest {
     @BeforeEach
     private void setUpPerTest() {
         ticket = new Ticket();
+    }
+    
+    private void addTicketDAOMock() {
+    	ticket.setVehicleRegNumber("ABCDEF");
+        try {
+        	when(ticketDAO.getTicket(anyString())).thenReturn(null);
+            fareCalculatorService.ticketDAO = ticketDAO;
+        } catch(Exception e) {
+        	e.printStackTrace();
+        	throw  new RuntimeException("Failed to set up test mock objects");
+        }
     }
 
     @Test
@@ -40,6 +59,7 @@ public class FareCalculatorServiceTest {
         ticket.setInTime(inTime);
         ticket.setOutTime(outTime);
         ticket.setParkingSpot(parkingSpot);
+        addTicketDAOMock();
         fareCalculatorService.calculateFare(ticket);
         assertEquals(ticket.getPrice(), Fare.CAR_RATE_PER_HOUR);
     }
@@ -54,6 +74,7 @@ public class FareCalculatorServiceTest {
         ticket.setInTime(inTime);
         ticket.setOutTime(outTime);
         ticket.setParkingSpot(parkingSpot);
+        addTicketDAOMock();
         fareCalculatorService.calculateFare(ticket);
         assertEquals(ticket.getPrice(), Fare.BIKE_RATE_PER_HOUR);
     }
@@ -94,6 +115,7 @@ public class FareCalculatorServiceTest {
         ticket.setInTime(inTime);
         ticket.setOutTime(outTime);
         ticket.setParkingSpot(parkingSpot);
+        addTicketDAOMock();
         fareCalculatorService.calculateFare(ticket);
         assertEquals((0.75 * Fare.BIKE_RATE_PER_HOUR), ticket.getPrice() );
     }
@@ -108,6 +130,7 @@ public class FareCalculatorServiceTest {
         ticket.setInTime(inTime);
         ticket.setOutTime(outTime);
         ticket.setParkingSpot(parkingSpot);
+        addTicketDAOMock();
         fareCalculatorService.calculateFare(ticket);
         assertEquals( (0.75 * Fare.CAR_RATE_PER_HOUR) , ticket.getPrice());
     }
@@ -122,65 +145,8 @@ public class FareCalculatorServiceTest {
         ticket.setInTime(inTime);
         ticket.setOutTime(outTime);
         ticket.setParkingSpot(parkingSpot);
+        addTicketDAOMock();
         fareCalculatorService.calculateFare(ticket);
         assertEquals( (24 * Fare.CAR_RATE_PER_HOUR) , ticket.getPrice());
-    }
-
-	@ParameterizedTest(name = "{0} minutes must be free parking time")
-    @ValueSource(ints = {15, 29})
-    public void calculateFareCarWithFreeParkingTime(int arg) {
-    	Date inTime = new Date();
-        inTime.setTime( System.currentTimeMillis() - (  arg * 60 * 1000) ); // {arg} minutes parking time should give 0 * parking fare per hour
-        Date outTime = new Date();
-        ParkingSpot parkingSpot = new ParkingSpot(1, ParkingType.CAR, false);
-
-        ticket.setInTime(inTime);
-        ticket.setOutTime(outTime);
-        ticket.setParkingSpot(parkingSpot);
-        fareCalculatorService.calculateFare(ticket);
-        assertEquals(0.0 , ticket.getPrice());
-    }
-
-    @Test
-    public void calculateFareCarWithMoreThanFreeParkingTime() {
-    	Date inTime = new Date();
-        inTime.setTime( System.currentTimeMillis() - (  30 * 60 * 1000) );//30 minutes parking time should give a half parking fare per hour
-        Date outTime = new Date();
-        ParkingSpot parkingSpot = new ParkingSpot(1, ParkingType.CAR, false);
-
-        ticket.setInTime(inTime);
-        ticket.setOutTime(outTime);
-        ticket.setParkingSpot(parkingSpot);
-        fareCalculatorService.calculateFare(ticket);
-        assertEquals(0.5 * Fare.CAR_RATE_PER_HOUR, ticket.getPrice());
-    }
-
-	@ParameterizedTest(name = "{0} minutes must be free parking time")
-    @ValueSource(ints = {15, 29})
-    public void calculateFareBikeWithFreeParkingTime(int arg) {
-    	Date inTime = new Date();
-        inTime.setTime( System.currentTimeMillis() - (  arg * 60 * 1000) ); // {arg} minutes parking time should give 0 * parking fare per hour
-        Date outTime = new Date();
-        ParkingSpot parkingSpot = new ParkingSpot(1, ParkingType.BIKE, false);
-
-        ticket.setInTime(inTime);
-        ticket.setOutTime(outTime);
-        ticket.setParkingSpot(parkingSpot);
-        fareCalculatorService.calculateFare(ticket);
-        assertEquals(0.0 , ticket.getPrice());
-    }
-
-    @Test
-    public void calculateFareBikeWithMoreThanFreeParkingTime() {
-    	Date inTime = new Date();
-        inTime.setTime( System.currentTimeMillis() - (  30 * 60 * 1000) );//30 minutes parking time should give a half parking fare per hour
-        Date outTime = new Date();
-        ParkingSpot parkingSpot = new ParkingSpot(1, ParkingType.BIKE, false);
-
-        ticket.setInTime(inTime);
-        ticket.setOutTime(outTime);
-        ticket.setParkingSpot(parkingSpot);
-        fareCalculatorService.calculateFare(ticket);
-        assertEquals(0.5 * Fare.BIKE_RATE_PER_HOUR, ticket.getPrice());
     }
 }

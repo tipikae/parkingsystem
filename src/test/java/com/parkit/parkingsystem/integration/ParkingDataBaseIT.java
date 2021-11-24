@@ -52,7 +52,7 @@ public class ParkingDataBaseIT {
 
     @AfterAll
     private static void tearDown(){
-
+        dataBasePrepareService.clearDataBaseEntries();
     }
 
     @Test
@@ -125,4 +125,21 @@ public class ParkingDataBaseIT {
         assertEquals(2 * Fare.CAR_RATE_PER_HOUR, ticket.getPrice());
     }
 	 
+    @Test
+    public void testParkingLotExitForRecurringUsers() {
+    	testParkingLotExit();
+    	testParkingACar();
+    	ParkingService parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO, ticketDAO);
+    	
+    	Ticket ticket = ticketDAO.getTicket("ABCDEF");
+        ticket.setInTime(new Date(System.currentTimeMillis() - (60 * 60 * 1000)));
+        ticketDAO.updateTicketInTime(ticket);
+        
+        parkingService.processExitingVehicle();
+        
+        // check ticket price = 1.425
+        ticket = ticketDAO.getTicket("ABCDEF");
+        double fare = Fare.CAR_RATE_PER_HOUR - Fare.CAR_RATE_PER_HOUR * 0.05;
+        assertEquals(fare, ticket.getPrice());
+    }
 }

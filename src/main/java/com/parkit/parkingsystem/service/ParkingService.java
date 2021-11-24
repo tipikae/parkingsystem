@@ -35,6 +35,8 @@ public class ParkingService {
                 parkingSpot.setAvailable(false);
                 parkingSpotDAO.updateParking(parkingSpot);//allot this parking space and mark it's availability as false
 
+                checkRecurringUser(vehicleRegNumber);
+                
                 Date inTime = new Date();
                 Ticket ticket = new Ticket();
                 //ID, PARKING_NUMBER, VEHICLE_REG_NUMBER, PRICE, IN_TIME, OUT_TIME)
@@ -54,7 +56,13 @@ public class ParkingService {
         }
     }
 
-    private String getVehichleRegNumber() throws Exception {
+    private void checkRecurringUser(String vehicleRegNumber) {
+		if(ticketDAO.getTicket(vehicleRegNumber) != null) {
+			System.out.println("Welcome back! As a recurring user of our parking lot, you'll benefit from a 5% discount.");
+		}
+	}
+
+	private String getVehichleRegNumber() throws Exception {
         System.out.println("Please type the vehicle registration number and press enter key");
         return inputReaderUtil.readVehicleRegistrationNumber();
     }
