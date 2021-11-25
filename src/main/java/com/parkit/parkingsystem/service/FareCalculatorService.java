@@ -3,15 +3,12 @@ package com.parkit.parkingsystem.service;
 import java.util.concurrent.TimeUnit;
 
 import com.parkit.parkingsystem.constants.Fare;
-import com.parkit.parkingsystem.dao.TicketDAO;
 import com.parkit.parkingsystem.model.Ticket;
 
 public class FareCalculatorService {
 	
 	private static final int FREE_MINUTES_PARKING = 30;
 	private static final double DISCOUNT = 0.05;
-
-	public TicketDAO ticketDAO = new TicketDAO();
 
     public void calculateFare(Ticket ticket){
         if( (ticket.getOutTime() == null) || (ticket.getOutTime().before(ticket.getInTime())) ){
@@ -44,18 +41,10 @@ public class FareCalculatorService {
 	            default: throw new IllegalArgumentException("Unkown Parking Type");
 	        }
         	
-        	if(isRecurringUser(ticket.getVehicleRegNumber())) fare -= fare * DISCOUNT;
+        	if(ticket.isRecurrent()) fare -= fare * DISCOUNT;
         	price = duration * fare;
         }
         
         ticket.setPrice(price);
     }
-
-    private boolean isRecurringUser(String vehicleRegNumber) {
-    	boolean result = false;
-		if(ticketDAO.getTicket(vehicleRegNumber) != null) {
-			result = true;
-		}
-		return result;
-	}
 }
