@@ -8,8 +8,6 @@ import com.parkit.parkingsystem.service.FareCalculatorService;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -19,7 +17,7 @@ public class FareCalculatorServiceTest {
 
     private static FareCalculatorService fareCalculatorService;
     private Ticket ticket;
-
+    
     @BeforeAll
     private static void setUp() {
         fareCalculatorService = new FareCalculatorService();
@@ -28,6 +26,7 @@ public class FareCalculatorServiceTest {
     @BeforeEach
     private void setUpPerTest() {
         ticket = new Ticket();
+        ticket.setRecurrent(false);
     }
 
     @Test
@@ -124,63 +123,5 @@ public class FareCalculatorServiceTest {
         ticket.setParkingSpot(parkingSpot);
         fareCalculatorService.calculateFare(ticket);
         assertEquals( (24 * Fare.CAR_RATE_PER_HOUR) , ticket.getPrice());
-    }
-
-	@ParameterizedTest(name = "{0} minutes must be free parking time")
-    @ValueSource(ints = {15, 29})
-    public void calculateFareCarWithFreeParkingTime(int arg) {
-    	Date inTime = new Date();
-        inTime.setTime( System.currentTimeMillis() - (  arg * 60 * 1000) ); // {arg} minutes parking time should give 0 * parking fare per hour
-        Date outTime = new Date();
-        ParkingSpot parkingSpot = new ParkingSpot(1, ParkingType.CAR, false);
-
-        ticket.setInTime(inTime);
-        ticket.setOutTime(outTime);
-        ticket.setParkingSpot(parkingSpot);
-        fareCalculatorService.calculateFare(ticket);
-        assertEquals(0.0 , ticket.getPrice());
-    }
-
-    @Test
-    public void calculateFareCarWithMoreThanFreeParkingTime() {
-    	Date inTime = new Date();
-        inTime.setTime( System.currentTimeMillis() - (  30 * 60 * 1000) );//30 minutes parking time should give a half parking fare per hour
-        Date outTime = new Date();
-        ParkingSpot parkingSpot = new ParkingSpot(1, ParkingType.CAR, false);
-
-        ticket.setInTime(inTime);
-        ticket.setOutTime(outTime);
-        ticket.setParkingSpot(parkingSpot);
-        fareCalculatorService.calculateFare(ticket);
-        assertEquals(0.5 * Fare.CAR_RATE_PER_HOUR, ticket.getPrice());
-    }
-
-	@ParameterizedTest(name = "{0} minutes must be free parking time")
-    @ValueSource(ints = {15, 29})
-    public void calculateFareBikeWithFreeParkingTime(int arg) {
-    	Date inTime = new Date();
-        inTime.setTime( System.currentTimeMillis() - (  arg * 60 * 1000) ); // {arg} minutes parking time should give 0 * parking fare per hour
-        Date outTime = new Date();
-        ParkingSpot parkingSpot = new ParkingSpot(1, ParkingType.BIKE, false);
-
-        ticket.setInTime(inTime);
-        ticket.setOutTime(outTime);
-        ticket.setParkingSpot(parkingSpot);
-        fareCalculatorService.calculateFare(ticket);
-        assertEquals(0.0 , ticket.getPrice());
-    }
-
-    @Test
-    public void calculateFareBikeWithMoreThanFreeParkingTime() {
-    	Date inTime = new Date();
-        inTime.setTime( System.currentTimeMillis() - (  30 * 60 * 1000) );//30 minutes parking time should give a half parking fare per hour
-        Date outTime = new Date();
-        ParkingSpot parkingSpot = new ParkingSpot(1, ParkingType.BIKE, false);
-
-        ticket.setInTime(inTime);
-        ticket.setOutTime(outTime);
-        ticket.setParkingSpot(parkingSpot);
-        fareCalculatorService.calculateFare(ticket);
-        assertEquals(0.5 * Fare.BIKE_RATE_PER_HOUR, ticket.getPrice());
     }
 }

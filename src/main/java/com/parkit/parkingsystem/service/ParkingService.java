@@ -35,6 +35,8 @@ public class ParkingService {
                 parkingSpot.setAvailable(false);
                 parkingSpotDAO.updateParking(parkingSpot);//allot this parking space and mark it's availability as false
 
+                boolean isRecurrent = isRecurringUser(vehicleRegNumber);
+                
                 Date inTime = new Date();
                 Ticket ticket = new Ticket();
                 //ID, PARKING_NUMBER, VEHICLE_REG_NUMBER, PRICE, IN_TIME, OUT_TIME)
@@ -44,7 +46,16 @@ public class ParkingService {
                 ticket.setPrice(0);
                 ticket.setInTime(inTime);
                 ticket.setOutTime(null);
+                if(isRecurrent) {
+                	ticket.setRecurrent(true);
+                } else {
+                	ticket.setRecurrent(false);
+                }
                 ticketDAO.saveTicket(ticket);
+                
+                if(isRecurrent)
+                	System.out.println("Welcome back! As a recurring user of our parking lot, "
+                			+ "you'll benefit from a 5% discount.");
                 System.out.println("Generated Ticket and saved in DB");
                 System.out.println("Please park your vehicle in spot number:"+parkingSpot.getId());
                 System.out.println("Recorded in-time for vehicle number:"+vehicleRegNumber+" is:"+inTime);
@@ -54,7 +65,7 @@ public class ParkingService {
         }
     }
 
-    private String getVehichleRegNumber() throws Exception {
+	private String getVehichleRegNumber() throws Exception {
         System.out.println("Please type the vehicle registration number and press enter key");
         return inputReaderUtil.readVehicleRegistrationNumber();
     }
@@ -117,4 +128,11 @@ public class ParkingService {
             logger.error("Unable to process exiting vehicle",e);
         }
     }
+
+    private boolean isRecurringUser(String vehicleRegNumber) {
+		if(ticketDAO.getTicket(vehicleRegNumber) != null) {
+			return true;
+		}
+		return false;
+	}
 }

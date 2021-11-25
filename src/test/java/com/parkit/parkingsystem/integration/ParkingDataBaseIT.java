@@ -20,6 +20,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import static org.mockito.Mockito.when;
 
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -52,7 +53,7 @@ public class ParkingDataBaseIT {
 
     @AfterAll
     private static void tearDown(){
-
+        dataBasePrepareService.clearDataBaseEntries();
     }
 
     @Test
@@ -78,7 +79,7 @@ public class ParkingDataBaseIT {
         // si ticket.inTime = ticket.outTime -> FareCalculatorService.calculateFare() throws IllegalArgumentException
         // donc on recule ticket.inTime
         Ticket ticket = ticketDAO.getTicket("ABCDEF");
-        ticket.setInTime(new Date(System.currentTimeMillis() - (60 * 60 * 1000)));
+        ticket.setInTime(new Date(System.currentTimeMillis() - (2 * 60 * 60 * 1000)));
         ticketDAO.updateTicketInTime(ticket);
         
         parkingService.processExitingVehicle();
@@ -107,22 +108,28 @@ public class ParkingDataBaseIT {
         ticket = ticketDAO.getTicket("ABCDEF");
         assertEquals(0.0, ticket.getPrice());
     }
-  
-    @Test 
-    public void testParkingLotExitAfterFreeParkingTime() { 
+	 
+    @Test
+    public void testParkingLotExitForRecurringUsers() {
+    	testParkingLotExit();
     	testParkingACar();
     	ParkingService parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO, ticketDAO);
-        
-    	// on recule l'heure d'entrée de 2 heures
+    	
     	Ticket ticket = ticketDAO.getTicket("ABCDEF");
-        ticket.setInTime(new Date(System.currentTimeMillis() - (2 * 60 * 60 * 1000)));
+        ticket.setInTime(new Date(System.currentTimeMillis() - (60 * 60 * 1000)));
         ticketDAO.updateTicketInTime(ticket);
         
         parkingService.processExitingVehicle();
         
-        // check price = 2 * CAR_RATE_PER_HOUR
+        // check ticket price = 1.425
         ticket = ticketDAO.getTicket("ABCDEF");
-        assertEquals(2 * Fare.CAR_RATE_PER_HOUR, ticket.getPrice());
+        double diffInMinutes = TimeUnit.MILLISECONDS.toMinutes(
+        		ticket.getOutTime().getTime() - ticket.getInTime().getTime());
+        double duration = diffInMinutes / 60;
+        double fare = Fare.CAR_RATE_PER_HOUR;
+        fare *= duration;
+        fare -= fare * 0.05;
+        assertTrue(ticket.isRecurrent());
+        assertEquals(fare, ticket.getPrice());
     }
-	 
 }
