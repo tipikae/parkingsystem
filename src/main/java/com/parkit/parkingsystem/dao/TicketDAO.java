@@ -13,100 +13,162 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
 
+/**
+ * DAO for Ticket model.
+ *
+ * @author Gilles Bernard
+ * @version 1.0
+ *
+ */
 public class TicketDAO {
 
-    private static final Logger logger = LogManager.getLogger("TicketDAO");
+	/**
+	 * The logger.
+	 */
+	private static final Logger LOGGER = LogManager.getLogger("TicketDAO");
 
-    public DataBaseConfig dataBaseConfig = new DataBaseConfig();
+	/**
+	 * The database configuration.
+	 */
+	private DataBaseConfig dataBaseConfig;
 
-    public boolean saveTicket(Ticket ticket){
-        Connection con = null;
-        boolean result = false;
-        try {
-            con = dataBaseConfig.getConnection();
-            PreparedStatement ps = con.prepareStatement(DBConstants.SAVE_TICKET);
-            //ID, PARKING_NUMBER, VEHICLE_REG_NUMBER, PRICE, IN_TIME, OUT_TIME)
-            //ps.setInt(1,ticket.getId());
-            ps.setInt(1,ticket.getParkingSpot().getId());
-            ps.setString(2, ticket.getVehicleRegNumber());
-            ps.setDouble(3, ticket.getPrice());
-            ps.setTimestamp(4, new Timestamp(ticket.getInTime().getTime()));
-            ps.setTimestamp(5, (ticket.getOutTime() == null)?null: (new Timestamp(ticket.getOutTime().getTime())) );
-            ps.setBoolean(6, ticket.isRecurrent());
-            result = ps.execute();
-            dataBaseConfig.closePreparedStatement(ps);
-        }catch (Exception ex){
-            logger.error("Error saving ticket",ex);
-        }finally {
-            dataBaseConfig.closeConnection(con);
-        }
-        return result;
-    }
+	/**
+	 * Constructor.
+	 */
+	public TicketDAO() {
+		dataBaseConfig = new DataBaseConfig();
+	}
 
-    public Ticket getTicket(String vehicleRegNumber) {
-        Connection con = null;
-        Ticket ticket = null;
-        try {
-            con = dataBaseConfig.getConnection();
-            PreparedStatement ps = con.prepareStatement(DBConstants.GET_TICKET);
-            //ID, PARKING_NUMBER, VEHICLE_REG_NUMBER, PRICE, IN_TIME, OUT_TIME)
-            ps.setString(1,vehicleRegNumber);
-            ResultSet rs = ps.executeQuery();
-            if(rs.next()){
-                ticket = new Ticket();
-                ParkingSpot parkingSpot = new ParkingSpot(rs.getInt(1), ParkingType.valueOf(rs.getString(6)),false);
-                ticket.setParkingSpot(parkingSpot);
-                ticket.setId(rs.getInt(2));
-                ticket.setVehicleRegNumber(vehicleRegNumber);
-                ticket.setPrice(rs.getDouble(3));
-                ticket.setInTime(rs.getTimestamp(4));
-                ticket.setOutTime(rs.getTimestamp(5));
-                ticket.setRecurrent(rs.getBoolean(7));
-            }
-            dataBaseConfig.closeResultSet(rs);
-            dataBaseConfig.closePreparedStatement(ps);
-        }catch (Exception ex){
-            logger.error("Error getting ticket, regNumber=" + vehicleRegNumber, ex);
-        }finally {
-            dataBaseConfig.closeConnection(con);
-        }
-        return ticket;
-    }
+	/**
+	 * Get the database configuration.
+	 *
+	 * @return DataBaseConfig
+	 */
+	public DataBaseConfig getDataBaseConfig() {
+		return dataBaseConfig;
+	}
 
-    public boolean updateTicket(Ticket ticket) {
-        Connection con = null;
-        try {
-            con = dataBaseConfig.getConnection();
-            PreparedStatement ps = con.prepareStatement(DBConstants.UPDATE_TICKET);
-            ps.setDouble(1, ticket.getPrice());
-            ps.setTimestamp(2, new Timestamp(ticket.getOutTime().getTime()));
-            ps.setInt(3,ticket.getId());
-            ps.execute();
-            dataBaseConfig.closePreparedStatement(ps);
-            return true;
-        } catch (Exception ex){
-            logger.error("Error saving ticket info",ex);
-        } finally {
-            dataBaseConfig.closeConnection(con);
-        }
-        return false;
-    }
+	/**
+	 * Set the database configuration.
+	 *
+	 * @param dbConfig
+	 */
+	public void setDataBaseConfig(final DataBaseConfig dbConfig) {
+		this.dataBaseConfig = dbConfig;
+	}
 
-    public boolean updateTicketInTime(Ticket ticket) {
-        Connection con = null;
-        try {
-            con = dataBaseConfig.getConnection();
-            PreparedStatement ps = con.prepareStatement(DBConstants.UPDATE_TICKET_IN_TIME);
-            ps.setTimestamp(1, new Timestamp(ticket.getInTime().getTime()));
-            ps.setInt(2,ticket.getId());
-            ps.execute();
-            dataBaseConfig.closePreparedStatement(ps);
-            return true;
-        }catch (Exception ex){
-            logger.error("Error saving ticket inTime",ex);
-        }finally {
-            dataBaseConfig.closeConnection(con);
-        }
-        return false;
-    }
+	/**
+	 * Save a ticket.
+	 *
+	 * @param ticket
+	 * @return boolean
+	 */
+	public boolean saveTicket(final Ticket ticket) {
+		Connection con = null;
+		boolean result = false;
+		try {
+			con = dataBaseConfig.getConnection();
+			PreparedStatement ps = con.prepareStatement(DBConstants.QUERY_SAVE_TICKET);
+			// ID, PARKING_NUMBER, VEHICLE_REG_NUMBER, PRICE, IN_TIME, OUT_TIME)
+			// ps.setInt(1,ticket.getId());
+			ps.setInt(DBConstants.SAVE_TICKET_FIELD_PARKING_NUMBER, ticket.getParkingSpot().getId());
+			ps.setString(DBConstants.SAVE_TICKET_FIELD_VEHICLE_REG_NUMBER, ticket.getVehicleRegNumber());
+			ps.setDouble(DBConstants.SAVE_TICKET_FIELD_PRICE, ticket.getPrice());
+			ps.setTimestamp(DBConstants.SAVE_TICKET_FIELD_IN_TIME, new Timestamp(ticket.getInTime().getTime()));
+			ps.setTimestamp(DBConstants.SAVE_TICKET_FIELD_OUT_TIME, (ticket.getOutTime() == null) ? null : (new Timestamp(ticket.getOutTime().getTime())));
+			ps.setBoolean(DBConstants.SAVE_TICKET_FIELD_IS_RECURRENT, ticket.isRecurrent());
+			result = ps.execute();
+			dataBaseConfig.closePreparedStatement(ps);
+		} catch (Exception ex) {
+			LOGGER.error("Error saving ticket", ex);
+		} finally {
+			dataBaseConfig.closeConnection(con);
+		}
+		return result;
+	}
+
+	/**
+	 * Get a ticket.
+	 *
+	 * @param vehicleRegNumber
+	 * @return Ticket
+	 */
+	public Ticket getTicket(final String vehicleRegNumber) {
+		Connection con = null;
+		Ticket ticket = null;
+		try {
+			con = dataBaseConfig.getConnection();
+			PreparedStatement ps = con.prepareStatement(DBConstants.QUERY_GET_TICKET);
+			// ID, PARKING_NUMBER, VEHICLE_REG_NUMBER, PRICE, IN_TIME, OUT_TIME)
+			ps.setString(1, vehicleRegNumber);
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()) {
+				ticket = new Ticket();
+				ParkingSpot parkingSpot = new ParkingSpot(rs.getInt(DBConstants.GET_TICKET_RESULT_PARKING_NUMBER), ParkingType.valueOf(rs.getString(DBConstants.GET_TICKET_RESULT_TYPE)), false);
+				ticket.setParkingSpot(parkingSpot);
+				ticket.setId(rs.getInt(DBConstants.GET_TICKET_RESULT_ID));
+				ticket.setVehicleRegNumber(vehicleRegNumber);
+				ticket.setPrice(rs.getDouble(DBConstants.GET_TICKET_RESULT_PRICE));
+				ticket.setInTime(rs.getTimestamp(DBConstants.GET_TICKET_RESULT_IN_TIME));
+				ticket.setOutTime(rs.getTimestamp(DBConstants.GET_TICKET_RESULT_OUT_TIME));
+				ticket.setRecurrent(rs.getBoolean(DBConstants.GET_TICKET_RESULT_IS_RECURRENT));
+			}
+			dataBaseConfig.closeResultSet(rs);
+			dataBaseConfig.closePreparedStatement(ps);
+		} catch (Exception ex) {
+			LOGGER.error("Error getting ticket, regNumber=" + vehicleRegNumber, ex);
+		} finally {
+			dataBaseConfig.closeConnection(con);
+		}
+		return ticket;
+	}
+
+	/**
+	 * Update a ticket.
+	 *
+	 * @param ticket
+	 * @return boolean
+	 */
+	public boolean updateTicket(final Ticket ticket) {
+		Connection con = null;
+		try {
+			con = dataBaseConfig.getConnection();
+			PreparedStatement ps = con.prepareStatement(DBConstants.QUERY_UPDATE_TICKET);
+			ps.setDouble(DBConstants.UPDATE_TICKET_FIELD_PRICE, ticket.getPrice());
+			ps.setTimestamp(DBConstants.UPDATE_TICKET_FIELD_OUT_TIME, new Timestamp(ticket.getOutTime().getTime()));
+			ps.setInt(DBConstants.UPDATE_TICKET_FIELD_ID, ticket.getId());
+			ps.execute();
+			dataBaseConfig.closePreparedStatement(ps);
+			return true;
+		} catch (Exception ex) {
+			LOGGER.error("Error saving ticket info", ex);
+		} finally {
+			dataBaseConfig.closeConnection(con);
+		}
+		return false;
+	}
+
+	/**
+	 * Update inTime ticket.
+	 *
+	 * @param ticket
+	 * @return boolean
+	 */
+	public boolean updateTicketInTime(final Ticket ticket) {
+		Connection con = null;
+		try {
+			con = dataBaseConfig.getConnection();
+			PreparedStatement ps = con.prepareStatement(DBConstants.QUERY_UPDATE_TICKET_IN_TIME);
+			ps.setTimestamp(DBConstants.UPDATE_TICKET_IN_TIME_FIELD_IN_TIME, new Timestamp(ticket.getInTime().getTime()));
+			ps.setInt(DBConstants.UPDATE_TICKET_IN_TIME_FIELD_ID, ticket.getId());
+			ps.execute();
+			dataBaseConfig.closePreparedStatement(ps);
+			return true;
+		} catch (Exception ex) {
+			LOGGER.error("Error saving ticket inTime", ex);
+		} finally {
+			dataBaseConfig.closeConnection(con);
+		}
+		return false;
+	}
 }

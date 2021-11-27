@@ -37,7 +37,7 @@ class ParkingSpotDAOTest {
 		} catch (ClassNotFoundException | SQLException e) {
 			fail("Failed to mock doThrow on dataBaseConfig");
 		}
-    	parkingSpotDAO.dataBaseConfig = dataBaseConfig;
+    	parkingSpotDAO.setDataBaseConfig(dataBaseConfig);
     }
     
 	@Test

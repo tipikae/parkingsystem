@@ -2,45 +2,104 @@ package com.parkit.parkingsystem.model;
 
 import com.parkit.parkingsystem.constants.ParkingType;
 
+/**
+ * ParkingSpot model.
+ *
+ * @author Gilles Bernard
+ * @version 1.0
+ *
+ */
 public class ParkingSpot {
-    private int number;
-    private ParkingType parkingType;
-    private boolean isAvailable;
+    /**
+     * Number.
+     */
+	private int number;
 
-    public ParkingSpot(int number, ParkingType parkingType, boolean isAvailable) {
-        this.number = number;
-        this.parkingType = parkingType;
-        this.isAvailable = isAvailable;
+	/**
+	 * Parking type.
+	 */
+	private ParkingType parkingType;
+
+	/**
+	 * Availability.
+	 */
+	private boolean isAvailable;
+
+    /**
+     * Constructor.
+     *
+     * @param mNumber
+     * @param mParkingType
+     * @param mIsAvailable
+     */
+	public ParkingSpot(final int mNumber, final ParkingType mParkingType, final boolean mIsAvailable) {
+        this.number = mNumber;
+        this.parkingType = mParkingType;
+        this.isAvailable = mIsAvailable;
     }
 
-    public int getId() {
+    /**
+     * Get id.
+     *
+     * @return int
+     */
+	public int getId() {
         return number;
     }
 
-    public void setId(int number) {
-        this.number = number;
+    /**
+     * Set id.
+     *
+     * @param mNumber
+     */
+	public void setId(final int mNumber) {
+        this.number = mNumber;
     }
 
-    public ParkingType getParkingType() {
+    /**
+     * Get parking type.
+     *
+     * @return ParkingType
+     */
+	public ParkingType getParkingType() {
         return parkingType;
     }
 
-    public void setParkingType(ParkingType parkingType) {
-        this.parkingType = parkingType;
+    /**
+     * Set parking type.
+     *
+     * @param mParkingType
+     */
+	public void setParkingType(final ParkingType mParkingType) {
+        this.parkingType = mParkingType;
     }
 
+    /**
+     * Get availability.
+     *
+     * @return boolean
+     */
     public boolean isAvailable() {
         return isAvailable;
     }
 
-    public void setAvailable(boolean available) {
-        isAvailable = available;
+    /**
+     * Set availability.
+     *
+     * @param mAvailable
+     */
+    public void setAvailable(final boolean mAvailable) {
+        isAvailable = mAvailable;
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+    public boolean equals(final Object o) {
+        if (this == o) {
+        	return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+        	return false;
+        }
         ParkingSpot that = (ParkingSpot) o;
         return number == that.number;
     }

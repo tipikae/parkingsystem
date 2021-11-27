@@ -36,7 +36,7 @@ class TicketDAOTest {
 		} catch (ClassNotFoundException | SQLException e) {
 			fail("Failed to mock doThrow on dataBaseConfig");
 		}
-		ticketDAO.dataBaseConfig = dataBaseConfig;
+		ticketDAO.setDataBaseConfig(dataBaseConfig);
     }
 
 	@Test

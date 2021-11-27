@@ -1,7 +1,6 @@
 package com.parkit.parkingsystem;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 
 import java.sql.Connection;
@@ -17,7 +16,6 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.parkit.parkingsystem.config.DataBaseConfig;
-import com.parkit.parkingsystem.model.ParkingSpot;
 
 @ExtendWith(MockitoExtension.class)
 class DataBaseConfigTest {
