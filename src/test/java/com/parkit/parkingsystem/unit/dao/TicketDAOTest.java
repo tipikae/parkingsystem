@@ -1,8 +1,9 @@
-package com.parkit.parkingsystem;
+package com.parkit.parkingsystem.unit.dao;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.doThrow;
 
+import java.io.IOException;
 import java.sql.SQLException;
 
 import org.junit.jupiter.api.BeforeAll;
@@ -33,7 +34,7 @@ class TicketDAOTest {
     private void setUpPerTest() {
     	try {
 			doThrow(ClassNotFoundException.class).when(dataBaseConfig).getConnection();
-		} catch (ClassNotFoundException | SQLException e) {
+		} catch (ClassNotFoundException | SQLException | IOException e) {
 			fail("Failed to mock doThrow on dataBaseConfig");
 		}
 		ticketDAO.setDataBaseConfig(dataBaseConfig);

@@ -15,15 +15,16 @@ import org.apache.logging.log4j.Logger;
  *
  */
 public class InteractiveShell {
+	
+	public static InputReaderUtil inputReaderUtil = new InputReaderUtil();
+	public static ParkingSpotDAO parkingSpotDAO = new ParkingSpotDAO();
+	public static TicketDAO ticketDAO = new TicketDAO();
+	public static ParkingService parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO, ticketDAO);
 
 	/**
 	 * The logger.
 	 */
 	private static final Logger LOGGER = LogManager.getLogger("InteractiveShell");
-
-	protected InteractiveShell() {
-		throw new UnsupportedOperationException();
-	}
 
 	/**
 	 * Load the interface.
@@ -33,10 +34,6 @@ public class InteractiveShell {
 		System.out.println("Welcome to Parking System!");
 
 		boolean continueApp = true;
-		InputReaderUtil inputReaderUtil = new InputReaderUtil();
-		ParkingSpotDAO parkingSpotDAO = new ParkingSpotDAO();
-		TicketDAO ticketDAO = new TicketDAO();
-		ParkingService parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO, ticketDAO);
 
 		while (continueApp) {
 			loadMenu();

@@ -50,10 +50,11 @@ public class FareCalculatorService {
 					throw new IllegalArgumentException("Unkown Parking Type");
 			}
 
+			fare *= duration;
 			if (ticket.isRecurrent()) {
 				fare -= fare * Fare.DISCOUNT;
 			}
-			price = duration * fare;
+			price = fare;
 		}
 
 		ticket.setPrice(price);

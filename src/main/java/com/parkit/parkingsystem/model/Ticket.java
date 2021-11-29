@@ -135,7 +135,11 @@ public class Ticket {
      * @return Date
      */
 	public Date getOutTime() {
-        return outTime;
+        if (outTime == null) {
+			return outTime;
+		} else {
+			return (Date) outTime.clone();
+		}
     }
 
     /**
@@ -144,7 +148,11 @@ public class Ticket {
      * @param mOutTime
      */
 	public void setOutTime(Date mOutTime) {
-        this.outTime = mOutTime;
+        if (mOutTime == null) {
+			this.outTime = mOutTime;
+		} else {
+			this.outTime = (Date) mOutTime.clone();
+		}
     }
 
 	/**

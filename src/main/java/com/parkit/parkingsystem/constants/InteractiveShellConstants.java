@@ -27,4 +27,14 @@ public class InteractiveShellConstants {
 	 * Menu shutdown.
 	 */
 	public static final int MENU_SHUTDOWN = 3;
+	
+	/**
+	 * Menu car parking type
+	 */
+	public static final int MENU_CAR = 1;
+	
+	/**
+	 * Menu bike parking type
+	 */
+	public static final int MENU_BIKE = 2;
 }

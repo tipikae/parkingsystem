@@ -1,5 +1,6 @@
 package com.parkit.parkingsystem.service;
 
+import com.parkit.parkingsystem.constants.InteractiveShellConstants;
 import com.parkit.parkingsystem.constants.ParkingType;
 import com.parkit.parkingsystem.dao.ParkingSpotDAO;
 import com.parkit.parkingsystem.dao.TicketDAO;
@@ -130,13 +131,13 @@ public class ParkingService {
 
 	private ParkingType getVehichleType() {
 		System.out.println("Please select vehicle type from menu");
-		System.out.println("1 CAR");
-		System.out.println("2 BIKE");
+		System.out.println(InteractiveShellConstants.MENU_CAR + " CAR");
+		System.out.println(InteractiveShellConstants.MENU_BIKE + " BIKE");
 		int input = inputReaderUtil.readSelection();
 		switch (input) {
-			case 1:
+			case InteractiveShellConstants.MENU_CAR:
 				return ParkingType.CAR;
-			case 2:
+			case InteractiveShellConstants.MENU_BIKE:
 				return ParkingType.BIKE;
 			default:
 				System.out.println("Incorrect input provided");

@@ -1,4 +1,4 @@
-package com.parkit.parkingsystem;
+package com.parkit.parkingsystem.unit.service;
 
 import static org.junit.jupiter.api.Assertions.*;
 

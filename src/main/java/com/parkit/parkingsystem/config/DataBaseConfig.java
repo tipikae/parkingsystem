@@ -1,10 +1,14 @@
 package com.parkit.parkingsystem.config;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Properties;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -29,12 +33,24 @@ public class DataBaseConfig {
 	 * @return Connection
 	 * @throws ClassNotFoundException
 	 * @throws SQLException
+	 * @throws IOException 
 	 */
-	public Connection getConnection() throws ClassNotFoundException, SQLException {
+	public Connection getConnection() throws ClassNotFoundException, SQLException, IOException {
 		LOGGER.info("Create DB connection");
 		Class.forName("com.mysql.cj.jdbc.Driver");
-		return DriverManager.getConnection("jdbc:mysql://localhost:3306/ocdajavap4_prod?enabledTLSProtocols=TLSv1.2",
-				"tipikae", "231045");
+		
+		try (InputStream fis = new FileInputStream("src/main/resources/database.properties")) {
+			Properties prop = new Properties();
+			prop.load(fis);
+			
+			return DriverManager.getConnection(
+					  prop.getProperty("db.url.prod"),
+					  prop.getProperty("db.user"),
+					  prop.getProperty("db.password"));
+		} catch (IOException e) {
+			LOGGER.error("Error while opening database properties file.", e);
+			throw e;
+		}		 
 	}
 
 	/**
