@@ -33,16 +33,16 @@ public class DataBaseConfig {
 	 * @return Connection
 	 * @throws ClassNotFoundException
 	 * @throws SQLException
-	 * @throws IOException 
+	 * @throws IOException
 	 */
 	public Connection getConnection() throws ClassNotFoundException, SQLException, IOException {
 		LOGGER.info("Create DB connection");
 		Class.forName("com.mysql.cj.jdbc.Driver");
-		
+
 		try (InputStream fis = new FileInputStream("src/main/resources/database.properties")) {
 			Properties prop = new Properties();
 			prop.load(fis);
-			
+
 			return DriverManager.getConnection(
 					  prop.getProperty("db.url.prod"),
 					  prop.getProperty("db.user"),
@@ -50,7 +50,7 @@ public class DataBaseConfig {
 		} catch (IOException e) {
 			LOGGER.error("Error while opening database properties file.", e);
 			throw e;
-		}		 
+		}
 	}
 
 	/**

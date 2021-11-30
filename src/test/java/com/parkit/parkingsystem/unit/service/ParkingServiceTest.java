@@ -75,6 +75,29 @@ public class ParkingServiceTest {
 		parkingService.processExitingVehicle();
 		verify(parkingSpotDAO, Mockito.times(1)).updateParking(any(ParkingSpot.class));
 	}
+	
+	@Test
+	public void processExitingVehicle_whenTicketAlreadyPaid_thenNoCallUpdateTicket() {
+		try {
+			when(inputReaderUtil.readVehicleRegistrationNumber()).thenReturn("ABCDEF");
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		ParkingSpot parkingSpot = new ParkingSpot(1, ParkingType.CAR, false);
+		Ticket ticket = new Ticket();
+		ticket.setInTime(new Date(System.currentTimeMillis() - (60 * 60 * 1000)));
+		ticket.setParkingSpot(parkingSpot);
+		ticket.setVehicleRegNumber("ABCDEF");
+		ticket.setOutTime(new Date());
+		when(ticketDAO.getTicket(anyString())).thenReturn(ticket);
+		
+		parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO, ticketDAO);
+		parkingService.processExitingVehicle();
+		
+		verify(ticketDAO, Mockito.times(0)).updateTicket(any(Ticket.class));
+	}
 
 	@Test
 	public void getNextParkingNumberIfAvailable_whenNoSlot_thenReturnsNull() {

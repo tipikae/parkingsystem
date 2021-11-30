@@ -79,7 +79,7 @@ public class ParkingDataBaseIT {
         // si ticket.inTime = ticket.outTime -> FareCalculatorService.calculateFare() throws IllegalArgumentException
         // donc on recule ticket.inTime
         Ticket ticket = ticketDAO.getTicket("ABCDEF");
-        ticket.setInTime(new Date(System.currentTimeMillis() - (2 * 60 * 60 * 1000)));
+        ticket.setInTime(new Date(ticket.getInTime().getTime() - (2 * 60 * 60 * 1000)));
         ticketDAO.updateTicketInTime(ticket);
         
         parkingService.processExitingVehicle();
@@ -99,7 +99,7 @@ public class ParkingDataBaseIT {
         
     	// on recule l'heure d'entrée de 15 minutes
     	Ticket ticket = ticketDAO.getTicket("ABCDEF");
-        ticket.setInTime(new Date(System.currentTimeMillis() - (15 * 60 * 1000)));
+        ticket.setInTime(new Date(ticket.getInTime().getTime() - (15 * 60 * 1000)));
         ticketDAO.updateTicketInTime(ticket);
         
         parkingService.processExitingVehicle();
@@ -114,11 +114,11 @@ public class ParkingDataBaseIT {
     	testParkingLotExit();
     	testParkingACar();
     	ParkingService parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO, ticketDAO);
-    	
+
     	Ticket ticket = ticketDAO.getTicket("ABCDEF");
-        ticket.setInTime(new Date(System.currentTimeMillis() - (60 * 60 * 1000)));
+        ticket.setInTime(new Date(ticket.getInTime().getTime() - (60 * 60 * 1000)));
         ticketDAO.updateTicketInTime(ticket);
-        
+    	
         parkingService.processExitingVehicle();
         
         // check ticket price = 1.425

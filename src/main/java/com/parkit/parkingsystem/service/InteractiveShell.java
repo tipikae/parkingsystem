@@ -15,10 +15,22 @@ import org.apache.logging.log4j.Logger;
  *
  */
 public class InteractiveShell {
-	
+
+	/**
+	 * The inputReaderUtil.
+	 */
 	public static InputReaderUtil inputReaderUtil = new InputReaderUtil();
+	/**
+	 * The parkingSpotDAO.
+	 */
 	public static ParkingSpotDAO parkingSpotDAO = new ParkingSpotDAO();
+	/**
+	 * The ticketDAO.
+	 */
 	public static TicketDAO ticketDAO = new TicketDAO();
+	/**
+	 * The parkingService.
+	 */
 	public static ParkingService parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO, ticketDAO);
 
 	/**

@@ -152,18 +152,22 @@ public class ParkingService {
 		try {
 			String vehicleRegNumber = getVehichleRegNumber();
 			Ticket ticket = ticketDAO.getTicket(vehicleRegNumber);
-			Date outTime = new Date();
-			ticket.setOutTime(outTime);
-			fareCalculatorService.calculateFare(ticket);
-			if (ticketDAO.updateTicket(ticket)) {
-				ParkingSpot parkingSpot = ticket.getParkingSpot();
-				parkingSpot.setAvailable(true);
-				parkingSpotDAO.updateParking(parkingSpot);
-				System.out.println("Please pay the parking fare:" + ticket.getPrice());
-				System.out.println(
-						"Recorded out-time for vehicle number:" + ticket.getVehicleRegNumber() + " is:" + outTime);
+			if (ticket != null && ticket.getOutTime() == null) {
+				Date outTime = new Date();
+				ticket.setOutTime(outTime);
+				fareCalculatorService.calculateFare(ticket);
+				if (ticketDAO.updateTicket(ticket)) {
+					ParkingSpot parkingSpot = ticket.getParkingSpot();
+					parkingSpot.setAvailable(true);
+					parkingSpotDAO.updateParking(parkingSpot);
+					System.out.println("Please pay the parking fare:" + ticket.getPrice());
+					System.out.println(
+							"Recorded out-time for vehicle number:" + ticket.getVehicleRegNumber() + " is:" + outTime);
+				} else {
+					System.out.println("Unable to update ticket information. Error occurred");
+				}
 			} else {
-				System.out.println("Unable to update ticket information. Error occurred");
+				System.out.println("No vehicle with registration number: " + vehicleRegNumber + " was found.");
 			}
 		} catch (Exception e) {
 			LOGGER.error("Unable to process exiting vehicle", e);

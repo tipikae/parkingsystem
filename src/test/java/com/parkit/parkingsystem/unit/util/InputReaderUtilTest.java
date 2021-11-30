@@ -21,7 +21,7 @@ class InputReaderUtilTest {
 	@Test
 	void readSelection_whenIntegerParseOne_thenReturnsOne() {
 	    System.setIn(new ByteArrayInputStream("1\n".getBytes()));
-	    InputReaderUtil.SCAN = new Scanner(System.in);
+	    InputReaderUtil.scan = new Scanner(System.in);
 		inputReaderUtil = new InputReaderUtil();
 		
 		assertEquals(1, inputReaderUtil.readSelection());
@@ -30,7 +30,7 @@ class InputReaderUtilTest {
 	@Test
 	void readSelection_whenIntegerParseIntThrowsError_thenReturnsMinusOne() {
 	    System.setIn(new ByteArrayInputStream("a\n".getBytes()));
-	    InputReaderUtil.SCAN = new Scanner(System.in);
+	    InputReaderUtil.scan = new Scanner(System.in);
 		inputReaderUtil = new InputReaderUtil();
 		
 		assertEquals(-1, inputReaderUtil.readSelection());
@@ -40,7 +40,7 @@ class InputReaderUtilTest {
 	void readVehicleRegistrationNumber_whenInputIsNotNull_thenReturnsString() {
 		String regNumber = "ABCDEF";
 		System.setIn(new ByteArrayInputStream((regNumber + "\n").getBytes()));
-	    InputReaderUtil.SCAN = new Scanner(System.in);
+	    InputReaderUtil.scan = new Scanner(System.in);
 		inputReaderUtil = new InputReaderUtil();
 		
 		try {
@@ -53,7 +53,7 @@ class InputReaderUtilTest {
 	@Test
 	void readVehicleRegistrationNumber_whenInputIsNull_thenThrowsException() {
 		System.setIn(new ByteArrayInputStream("\n".getBytes()));
-	    InputReaderUtil.SCAN = new Scanner(System.in);
+	    InputReaderUtil.scan = new Scanner(System.in);
 		inputReaderUtil = new InputReaderUtil();
 		
 		assertThrows(Exception.class, () -> inputReaderUtil.readVehicleRegistrationNumber());

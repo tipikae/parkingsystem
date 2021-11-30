@@ -17,7 +17,7 @@ public class InputReaderUtil {
 	/**
 	 * The scanner.
 	 */
-	public static Scanner SCAN = new Scanner(System.in, "utf-8");
+	public static Scanner scan = new Scanner(System.in, "utf-8");
 	/**
 	 * The logger.
 	 */
@@ -30,7 +30,7 @@ public class InputReaderUtil {
 	 */
 	public int readSelection() {
 		try {
-			int input = Integer.parseInt(SCAN.nextLine());
+			int input = Integer.parseInt(scan.nextLine());
 			return input;
 		} catch (Exception e) {
 			LOGGER.error("Error while reading user input from Shell", e);
@@ -47,7 +47,7 @@ public class InputReaderUtil {
 	 */
 	public String readVehicleRegistrationNumber() throws Exception {
 		try {
-			String vehicleRegNumber = SCAN.nextLine();
+			String vehicleRegNumber = scan.nextLine();
 			if (vehicleRegNumber == null || vehicleRegNumber.trim().length() == 0) {
 				throw new IllegalArgumentException("Invalid input provided");
 			}
