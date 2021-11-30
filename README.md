@@ -47,3 +47,8 @@ The app has unit tests and integration tests written. More of these need to be a
 To run the tests from maven, go to the folder that contains the pom.xml file and execute the below command.
 
 `mvn test`
+
+
+### Update1
+
+Configure the database properties (url, user, password) in the resource file `database.properties`.
