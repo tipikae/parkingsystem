@@ -94,6 +94,8 @@ public class ParkingService {
 				System.out.println("Generated Ticket and saved in DB");
 				System.out.println("Please park your vehicle in spot number:" + parkingSpot.getId());
 				System.out.println("Recorded in-time for vehicle number:" + vehicleRegNumber + " is:" + inTime);
+			} else {
+				System.out.println("Sorry there is no parking slot available.");
 			}
 		} catch (Exception e) {
 			LOGGER.error("Unable to process incoming vehicle", e);

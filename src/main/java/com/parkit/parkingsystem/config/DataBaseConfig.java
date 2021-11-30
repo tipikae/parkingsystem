@@ -1,6 +1,5 @@
 package com.parkit.parkingsystem.config;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
@@ -39,7 +38,7 @@ public class DataBaseConfig {
 		LOGGER.info("Create DB connection");
 		Class.forName("com.mysql.cj.jdbc.Driver");
 
-		try (InputStream fis = new FileInputStream("src/main/resources/database.properties")) {
+		try (InputStream fis = this.getClass().getResourceAsStream("/database.properties")) {
 			Properties prop = new Properties();
 			prop.load(fis);
 
@@ -47,7 +46,7 @@ public class DataBaseConfig {
 					  prop.getProperty("db.url.prod"),
 					  prop.getProperty("db.user"),
 					  prop.getProperty("db.password"));
-		} catch (IOException e) {
+		} catch (Exception e) {
 			LOGGER.error("Error while opening database properties file.", e);
 			throw e;
 		}

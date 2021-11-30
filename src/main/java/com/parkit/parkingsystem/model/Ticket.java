@@ -147,7 +147,7 @@ public class Ticket {
      *
      * @param mOutTime
      */
-	public void setOutTime(Date mOutTime) {
+	public void setOutTime(final Date mOutTime) {
         if (mOutTime == null) {
 			this.outTime = mOutTime;
 		} else {
