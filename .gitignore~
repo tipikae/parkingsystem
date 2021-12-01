@@ -1,8 +1,6 @@
 /target/
 /bin/
 /logs/
-/src/main/resources/database.properties
 .classpath
 .project
 .settings/
-
