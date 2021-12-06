@@ -2,59 +2,174 @@ package com.parkit.parkingsystem.model;
 
 import java.util.Date;
 
+/**
+ * Ticket model.
+ *
+ * @author Gilles Bernard
+ * @version 1.0
+ *
+ */
 public class Ticket {
-    private int id;
-    private ParkingSpot parkingSpot;
-    private String vehicleRegNumber;
-    private double price;
-    private Date inTime;
-    private Date outTime;
+    /**
+     * Id.
+     */
+	private int id;
+    /**
+     * ParkingSpot.
+     */
+	private ParkingSpot parkingSpot;
+    /**
+     * Vehicle registration number.
+     */
+	private String vehicleRegNumber;
+    /**
+     * Price.
+     */
+	private double price;
+    /**
+     * In time.
+     */
+	private Date inTime;
+	/**
+	 * Out time.
+	 */
+	private Date outTime;
+    /**
+     * Is recurrent user.
+     */
+	private boolean isRecurrent;
 
-    public int getId() {
+    /**
+     * Get id.
+     *
+     * @return int
+     */
+	public int getId() {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    /**
+     * Set id.
+     *
+     * @param mId
+     */
+	public void setId(final int mId) {
+        this.id = mId;
     }
 
-    public ParkingSpot getParkingSpot() {
+    /**
+     * Get parking spot.
+     *
+     * @return ParkingSpot
+     */
+	public ParkingSpot getParkingSpot() {
         return parkingSpot;
     }
 
-    public void setParkingSpot(ParkingSpot parkingSpot) {
-        this.parkingSpot = parkingSpot;
+    /**
+     * Set parking spot.
+     *
+     * @param mParkingSpot
+     */
+	public void setParkingSpot(final ParkingSpot mParkingSpot) {
+        this.parkingSpot = mParkingSpot;
     }
 
-    public String getVehicleRegNumber() {
+    /**
+     * Get vehicle registration number.
+     *
+     * @return String
+     */
+	public String getVehicleRegNumber() {
         return vehicleRegNumber;
     }
 
-    public void setVehicleRegNumber(String vehicleRegNumber) {
-        this.vehicleRegNumber = vehicleRegNumber;
+    /**
+     * Set vehicle registration number.
+     *
+     * @param mVehicleRegNumber
+     */
+	public void setVehicleRegNumber(final String mVehicleRegNumber) {
+        this.vehicleRegNumber = mVehicleRegNumber;
     }
 
-    public double getPrice() {
+    /**
+     * Get price.
+     *
+     * @return double
+     */
+	public double getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
-        this.price = price;
+    /**
+     * Set price.
+     *
+     * @param mPrice
+     */
+	public void setPrice(final double mPrice) {
+        this.price = mPrice;
     }
 
-    public Date getInTime() {
-        return inTime;
+    /**
+     * Get inTime.
+     *
+     * @return Date
+     */
+	public Date getInTime() {
+        return (Date) inTime.clone();
     }
 
-    public void setInTime(Date inTime) {
-        this.inTime = inTime;
+    /**
+     * Set inTime.
+     *
+     * @param mInTime
+     */
+	public void setInTime(final Date mInTime) {
+        this.inTime = (Date) mInTime.clone();
     }
 
-    public Date getOutTime() {
-        return outTime;
+    /**
+     * Get outTime.
+     *
+     * @return Date
+     */
+	public Date getOutTime() {
+        if (outTime == null) {
+			return null;
+		} else {
+			return (Date) outTime.clone();
+		}
     }
 
-    public void setOutTime(Date outTime) {
-        this.outTime = outTime;
+    /**
+     * Set outTime.
+     *
+     * @param mOutTime
+     */
+	public void setOutTime(final Date mOutTime) {
+        if (mOutTime == null) {
+			this.outTime = null;
+		} else {
+			this.outTime = (Date) mOutTime.clone();
+		}
     }
+
+	/**
+	 * Get recurrent.
+	 *
+	 * @return boolean
+	 */
+	public boolean isRecurrent() {
+		return isRecurrent;
+	}
+
+	/**
+	 * Set recurrent.
+	 *
+	 * @param mIsRecurrent
+	 */
+	public void setRecurrent(final boolean mIsRecurrent) {
+		this.isRecurrent = mIsRecurrent;
+	}
 }

@@ -1,6 +1,6 @@
 /* Setting up PROD DB */
-create database prod;
-use prod;
+create database ocdajavap4_prod;
+use ocdajavap4_prod;
 
 create table parking(
 PARKING_NUMBER int PRIMARY KEY,
@@ -15,6 +15,7 @@ create table ticket(
  PRICE double,
  IN_TIME DATETIME NOT NULL,
  OUT_TIME DATETIME,
+ IS_RECURRENT bool,
  FOREIGN KEY (PARKING_NUMBER)
  REFERENCES parking(PARKING_NUMBER));
 
@@ -26,8 +27,8 @@ insert into parking(PARKING_NUMBER,AVAILABLE,TYPE) values(5,true,'BIKE');
 commit;
 
 /* Setting up TEST DB */
-create database test;
-use test;
+create database ocdajavap4_test;
+use ocdajavap4_test;
 
 create table parking(
 PARKING_NUMBER int PRIMARY KEY,
@@ -42,6 +43,7 @@ create table ticket(
  PRICE double,
  IN_TIME DATETIME NOT NULL,
  OUT_TIME DATETIME,
+ IS_RECURRENT bool,
  FOREIGN KEY (PARKING_NUMBER)
  REFERENCES parking(PARKING_NUMBER));
 
