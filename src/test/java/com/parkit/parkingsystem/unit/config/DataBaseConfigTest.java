@@ -37,62 +37,38 @@ class DataBaseConfigTest {
     }
 	
 	@Test
-	void closeConnection() {
+	void closeConnection() throws SQLException {
 		dataBaseConfig.closeConnection(con);
-		try {
-			verify(con, Mockito.times(1)).close();
-		} catch (SQLException e) {
-			fail("Failed to mock con.close()");
-		}
+		verify(con, Mockito.times(1)).close();
 	}
 
 	@Test
-	void closePreparedStatement() {
+	void closePreparedStatement() throws SQLException {
 		dataBaseConfig.closePreparedStatement(ps);
-		try {
-			verify(ps, Mockito.times(1)).close();
-		} catch (SQLException e) {
-			fail("Failed to mock ps.close()");
-		}
+		verify(ps, Mockito.times(1)).close();
 	}
 
 	@Test
-	void closeResultSet() {
+	void closeResultSet() throws SQLException {
 		dataBaseConfig.closeResultSet(rs);
-		try {
-			verify(rs, Mockito.times(1)).close();
-		} catch (SQLException e) {
-			fail("Failed to mock rs.close()");
-		}
+		verify(rs, Mockito.times(1)).close();
 	}
 	
 	@Test
-	void closeConnectionWithNull() {
+	void closeConnectionWithNull() throws SQLException {
 		dataBaseConfig.closeConnection(null);
-		try {
-			verify(con, Mockito.times(0)).close();
-		} catch (SQLException e) {
-			fail("Failed to mock con.close()");
-		}
+		verify(con, Mockito.times(0)).close();
 	}
 
 	@Test
-	void closePreparedStatementWithNull() {
+	void closePreparedStatementWithNull() throws SQLException {
 		dataBaseConfig.closePreparedStatement(null);
-		try {
-			verify(ps, Mockito.times(0)).close();
-		} catch (SQLException e) {
-			fail("Failed to mock ps.close()");
-		}
+		verify(ps, Mockito.times(0)).close();
 	}
 
 	@Test
-	void closeResultSetWithNull() {
+	void closeResultSetWithNull() throws SQLException {
 		dataBaseConfig.closeResultSet(null);
-		try {
-			verify(rs, Mockito.times(0)).close();
-		} catch (SQLException e) {
-			fail("Failed to mock rs.close()");
-		}
+		verify(rs, Mockito.times(0)).close();
 	}
 }

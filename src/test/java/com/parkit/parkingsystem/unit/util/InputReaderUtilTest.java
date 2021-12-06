@@ -37,17 +37,13 @@ class InputReaderUtilTest {
 	}
 
 	@Test
-	void readVehicleRegistrationNumber_whenInputIsNotNull_thenReturnsString() {
+	void readVehicleRegistrationNumber_whenInputIsNotNull_thenReturnsString() throws Exception {
 		String regNumber = "ABCDEF";
 		System.setIn(new ByteArrayInputStream((regNumber + "\n").getBytes()));
 	    InputReaderUtil.scan = new Scanner(System.in);
 		inputReaderUtil = new InputReaderUtil();
 		
-		try {
-			assertEquals(regNumber, inputReaderUtil.readVehicleRegistrationNumber());
-		} catch (Exception e) {
-			fail("Assertion not OK", e);
-		}
+		assertEquals(regNumber, inputReaderUtil.readVehicleRegistrationNumber());
 	}
 
 	@Test

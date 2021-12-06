@@ -32,12 +32,8 @@ class ParkingSpotDAOTest {
     }
     
     @BeforeEach
-    private void setUpPerTest() {
-    	try {
-			doThrow(ClassNotFoundException.class).when(dataBaseConfig).getConnection();
-		} catch (ClassNotFoundException | SQLException | IOException e) {
-			fail("Failed to mock doThrow on dataBaseConfig");
-		}
+    private void setUpPerTest() throws ClassNotFoundException, SQLException, IOException {
+    	doThrow(ClassNotFoundException.class).when(dataBaseConfig).getConnection();
     	parkingSpotDAO.setDataBaseConfig(dataBaseConfig);
     }
     
