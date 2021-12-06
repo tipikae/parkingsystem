@@ -1,6 +1,5 @@
 package com.parkit.parkingsystem.unit.config;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.verify;
 
 import java.sql.Connection;
