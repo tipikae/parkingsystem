@@ -38,6 +38,8 @@ public class InteractiveShell {
 	 */
 	private static final Logger LOGGER = LogManager.getLogger("InteractiveShell");
 
+	private InteractiveShell() { }
+
 	/**
 	 * Load the interface.
 	 */

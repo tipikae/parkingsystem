@@ -65,7 +65,7 @@ public class ParkingSpotDAO {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		int result = -1;
-		
+
 		try {
 			con = dataBaseConfig.getConnection();
 			ps = con.prepareStatement(DBConstants.QUERY_GET_NEXT_PARKING_SPOT);
@@ -81,7 +81,7 @@ public class ParkingSpotDAO {
 			dataBaseConfig.closePreparedStatement(ps);
 			dataBaseConfig.closeConnection(con);
 		}
-		
+
 		return result;
 	}
 
@@ -96,7 +96,7 @@ public class ParkingSpotDAO {
 		Connection con = null;
 		PreparedStatement ps = null;
 		boolean result = false;
-		
+
 		try {
 			con = dataBaseConfig.getConnection();
 			ps = con.prepareStatement(DBConstants.QUERY_UPDATE_PARKING_SPOT);
@@ -110,7 +110,7 @@ public class ParkingSpotDAO {
 			dataBaseConfig.closePreparedStatement(ps);
 			dataBaseConfig.closeConnection(con);
 		}
-		
+
 		return result;
 	}
 
@@ -125,7 +125,7 @@ public class ParkingSpotDAO {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		ParkingSpot parking = null;
-		
+
 		try {
 			con = dataBaseConfig.getConnection();
 			ps = con.prepareStatement(DBConstants.QUERY_GET_PARKING_SPOT);

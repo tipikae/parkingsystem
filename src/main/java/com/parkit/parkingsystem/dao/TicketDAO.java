@@ -67,6 +67,7 @@ public class TicketDAO {
 		Connection con = null;
 		PreparedStatement ps = null;
 		boolean result = false;
+
 		try {
 			con = dataBaseConfig.getConnection();
 			ps = con.prepareStatement(DBConstants.QUERY_SAVE_TICKET);
@@ -83,7 +84,7 @@ public class TicketDAO {
 			dataBaseConfig.closePreparedStatement(ps);
 			dataBaseConfig.closeConnection(con);
 		}
-		
+
 		return result;
 	}
 
@@ -98,7 +99,7 @@ public class TicketDAO {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		Ticket ticket = null;
-		
+
 		try {
 			con = dataBaseConfig.getConnection();
 			ps = con.prepareStatement(DBConstants.QUERY_GET_TICKET);
@@ -122,7 +123,7 @@ public class TicketDAO {
 			dataBaseConfig.closePreparedStatement(ps);
 			dataBaseConfig.closeConnection(con);
 		}
-		
+
 		return ticket;
 	}
 
@@ -136,7 +137,7 @@ public class TicketDAO {
 		Connection con = null;
 		PreparedStatement ps = null;
 		boolean result = false;
-		
+
 		try {
 			con = dataBaseConfig.getConnection();
 			ps = con.prepareStatement(DBConstants.QUERY_UPDATE_TICKET);
@@ -151,7 +152,7 @@ public class TicketDAO {
 			dataBaseConfig.closePreparedStatement(ps);
 			dataBaseConfig.closeConnection(con);
 		}
-		
+
 		return result;
 	}
 
@@ -165,7 +166,7 @@ public class TicketDAO {
 		Connection con = null;
 		PreparedStatement ps = null;
 		boolean result = false;
-		
+
 		try {
 			con = dataBaseConfig.getConnection();
 			ps = con.prepareStatement(DBConstants.QUERY_UPDATE_TICKET_IN_TIME);
@@ -179,6 +180,7 @@ public class TicketDAO {
 			dataBaseConfig.closePreparedStatement(ps);
 			dataBaseConfig.closeConnection(con);
 		}
+
 		return result;
 	}
 }
