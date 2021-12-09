@@ -35,7 +35,8 @@ public class DBConstants {
 	/**
 	 * SQL query to save a ticket.
 	 */
-	public static final String QUERY_SAVE_TICKET = "insert into ticket(PARKING_NUMBER, VEHICLE_REG_NUMBER, PRICE, IN_TIME, OUT_TIME, IS_RECURRENT) values(?,?,?,?,?,?)";
+	public static final String QUERY_SAVE_TICKET = "insert into ticket(PARKING_NUMBER, VEHICLE_REG_NUMBER, PRICE, IN_TIME, OUT_TIME, IS_RECURRENT) "
+			+ "values(?,?,?,?,?,?)";
 
 	/**
 	 * SQL query to update a ticket.
@@ -50,7 +51,8 @@ public class DBConstants {
 	/**
 	 * SQL query to get a ticket.
 	 */
-	public static final String QUERY_GET_TICKET = "select t.PARKING_NUMBER, t.ID, t.PRICE, t.IN_TIME, t.OUT_TIME, p.TYPE, t.IS_RECURRENT from ticket t,parking p where p.parking_number = t.parking_number and t.VEHICLE_REG_NUMBER=? order by t.IN_TIME DESC limit 1";
+	public static final String QUERY_GET_TICKET = "select t.PARKING_NUMBER, t.ID, t.PRICE, t.IN_TIME, t.OUT_TIME, p.TYPE, t.IS_RECURRENT from ticket t, "
+			+ "parking p where p.parking_number = t.parking_number and t.VEHICLE_REG_NUMBER=? order by t.IN_TIME DESC limit 1";
 
 	/*
 	 * Fields
